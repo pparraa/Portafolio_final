@@ -1,0 +1,80 @@
+
+{% load static %}
+{% block head %}
+    <script src="{% static 'lib/highcharts-8.1.2/highcharts.js' %}"></script>
+    <script src="{% static 'lib/highcharts-8.1.2/modules/series-label.js' %}"></script>
+    <script src="{% static 'lib/highcharts-8.1.2/modules/exporting.js' %}"></script>
+    <script src="{% static 'lib/highcharts-8.1.2/modules/export-data.js' %}"></script>
+    <script src="{% static 'lib/highcharts-8.1.2/modules/accessibility.js' %}"></script>
+    <link rel="stylesheet" href="{% static '../static/css/3M-productores.css' %}"/>
+{% endblock %}
+<figure class="highcharts-figure">
+    <div id="container2"></div>
+</figure>
+<script type="application/javascript">
+    Highcharts.chart('container2', {
+        title: {
+            text: 'Fruta Aportada porlos 3 mejores Productores'
+        },
+        xAxis: {
+            categories: ['Manzana', 'Pera', 'Durazno', 'Naranja', 'Arándano']
+        },
+        labels: {
+            items: [{
+                html: 'Fruta Total Aportada',
+                style: {
+                    left: '50px',
+                    top: '18px',
+                    color: ( // theme
+                        Highcharts.defaultOptions.title.style &&
+                        Highcharts.defaultOptions.title.style.color
+                    ) || 'black'
+                }
+            }]
+        },
+        series: [{
+            type: 'column',
+            name: 'Esteban Huerta',
+            data: [3000, 2000, 1000, 3000, 4000]
+        }, {
+            type: 'column',
+            name: 'Luis Pérez',
+            data: [2000, 3000, 5000, 7000, 6000]
+        }, {
+            type: 'column',
+            name: 'Claudio Meza',
+            data: [4000, 3000, 3000, 9000, 2000]
+        }, {
+            type: 'spline',
+            name: 'Promedio',
+            data: [3000, 2000, 3000, 6000, 3000],
+            marker: {
+                lineWidth: 2,
+                lineColor: Highcharts.getOptions().colors[3],
+                fillColor: 'white'
+            }
+        }, {
+            type: 'pie',
+            name: 'Total kilos Aportado',
+            data: [{
+                name: 'Esteban Huerta',
+                y: 13000,
+                color: Highcharts.getOptions().colors[0] // Jane's color
+            }, {
+                name: 'Luis Pérez',
+                y: 23000,
+                color: Highcharts.getOptions().colors[1] // John's color
+            }, {
+                name: 'Claudio Meza',
+                y: 19000,
+                color: Highcharts.getOptions().colors[2] // Joe's color
+            }],
+            center: [100, 80],
+            size: 100,
+            showInLegend: false,
+            dataLabels: {
+                enabled: false
+            }
+        }]
+    });
+</script>

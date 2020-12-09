@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{%load humanize%}
+
+{% block title %} Detalle Venta Local {% endblock %}
+
+{% block content%} 
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+<div class="detalle-contenedor"> 
+        
+        {% for d in db_vlocal %} 
+        <div class="detalle-contenedor-titulo md:col-span-3">
+            <h1 class="detalle-contenedor-titulo__h1 md:px-20"><td>{{d.data.5}} {{d.data.6}}</td></h1>
+        </div>
+        <div class="detalle-contenedor-descripcion  md:grid-cols-3">
+            <div class="detalle-contenedor-imagen centrar-contenedor">
+                <img src="data:imagen/jpg;base64, {{d.imagen}}" alt="{{d.data.5}} {{d.data.6}}" class="detalle-contenedor-imagen__img">       
+            </div>
+            <div class="detalle-contenedor-informacion md:col-span-2 md:m-0"> 
+                <div class="detalle-contenedor-precio md:text-left">
+                    <span class="detalle-contenedor-precio__span ">$<td> {{d.data.3|intcomma}} - {{d.data.4}} Kg.</td></span>
+                </div>
+                <div class="detalle-contenedor-caracteristica md:my-2 md:h-48">
+                    <span class="detalle-contenedor-caracteristica__span">Características:</span>
+                    <ul>
+                     <br>
+                        <li class="detalle-contenedor-caracteristica__li"><h3>Kilos Disponibles:<td> {{d.data.4}} Kg.</h3></td></li>
+                        <li class="detalle-contenedor-caracteristica__li"><h3>Fecha cosecha:<td> {{d.data.8}}</h3></td></li>
+                        <li class="detalle-contenedor-caracteristica__li"><h3>Descripción:<br><br><td> {{d.data.11}}</h3></td></li>
+                    </ul>
+                </div>  
+                <form action="../comprar/" method="GET">
+                    {% csrf_token %}
+                <div class="container"> 
+                <span class="container-slider"><h3>¿Cuánto desea comprar?</h3></span>
+                    <div class="slidercontenedor">                       
+                        <input type="range" min="0" step="1" max="{{d.data.4}}" value="0" 
+                        class="slider" id="slider"> 
+                    
+                        <p>Valor: <span id="value"></span> K</p>     
+                    </div>           
+                <br>   
+                <script type="text/javascript">
+                    var slider =document.getElementById("slider");
+                    var val    =document.getElementById("value");                   
+                    val.innerHTML=slider.value;
+                    slider.oninput=function(){
+                       val.innerHTML=this.value;
+                    } 
+                    $(document).ready(function()
+                        {
+                        $('#slider').change(function(){
+                        $('#valorslider').val($(this).val());
+                        });                  
+                    }); 
+                </script>
+                <br>                
+                </div>                     
+                    <input type="hidden" value="{{d.data.0}}" name="Publicacion">
+                    <input type="hidden" id="valorslider" name="valorslider">
+                    <div class="boton-tarjeta">
+                        <div class="detalle-contenedor-btn centrar-contenedor md:m-0 md:justify-start md:items-end">
+                            <input type="submit" value="Comprar" class="button2" />
+                        </div> 
+                    </div>
+                </form>               
+            </div>
+        </div>
+        {% endfor %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+{% endblock %}

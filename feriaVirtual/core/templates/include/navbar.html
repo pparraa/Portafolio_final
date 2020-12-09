@@ -1,0 +1,171 @@
+    <div class="contenedor-navbar grid grid-cols-1 md:grid-col-6">
+        <div class="contenedor-menu flex justify-end border-b pr-4 md:hidden">
+            <span class="py-4"><i class="fas fa-bars text-white text-3xl"></i></span>
+        </div>
+        <a href="/">
+            <div class="contenedor-logo hidden md:flex centrar-contenedor"></div>
+        </a>
+    
+        <div class="contenedor-enlace md:col-span-3">
+            <ul class="contenedor-enlace__ul grid grid-cols-1 md:grid-cols-5">
+            {% if perms.core.view_pago %}
+
+                <a href="{% url 'home' %}"
+                    class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0 ">
+                    <li>Inicio</li>
+                </a>
+                <a href="#"
+                    class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0 ">
+                    <li></li>
+                </a>
+                <a href="#"
+                    class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0 " id="send">
+                    <li>Historial Compras</li>
+                </a>
+                <form action="{% url 'historial_compra' %}" method="POST" hidden="hidden">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{user.username}}" name="valcorreo">
+                    <input type="submit" id="subir_btn" name="subir_btn" value="historial_compra"  hidden="hidden"/>
+                </form>
+                <script>
+                        const subir_btn = document.getElementById('subir_btn');
+                        const send = document.getElementById('send');
+
+                        send.addEventListener("click",function () {
+    	                subir_btn.click();
+                        });
+                </script>
+                <a href="javascript:enviar_formulario11()"
+                    class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0 ">
+                    <li>Cuenta</li>
+                </a>
+                <form action="{% url 'informacion' %}" method="GET" hidden="hidden" name="formulario11" >
+                    {% csrf_token %}
+                    <input type="hidden" value="{{request.user.username}}" name="valcorreo">
+                </form>
+                <script>
+                    function enviar_formulario11(){
+                    document.formulario11.submit()
+                    }
+                </script>
+                
+                <a href="#"
+                    class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0 ">
+                    <li>Puntos</li>
+                </a>
+
+            {% else %}
+                {% if perms.core.view_solicitud %}
+                                 
+                    <a href="{% url 'home' %}"
+                        class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0 ">
+                        <li>Inicio</li>
+                    </a>
+                    <a href="#" class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0">
+                        <li></li>
+                    </a>
+                    <a href="{% url 'solicitud' %}" class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0">
+                        <li>Generar Solicitud</li>
+                    </a>
+                    <a href="javascript:enviar_formulario6()" class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0">
+                        <li>Pedidos</li>
+                    </a>
+                    <form action="{% url 'pedido' %}" method="POST" hidden="hidden" name="formulario6">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{user.username}}" name="valcorreo">
+                    </form>
+                        <script>
+                            function enviar_formulario6(){
+                            document.formulario6.submit()
+                            }
+                    </script>
+
+                    <a href="javascript:enviar_formulario10()" class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0">
+                        <li>Ordenes de Compra</li>
+                    </a>    
+                    <form action="{% url 'ordenesExterno' %}" method="POST" hidden="hidden" name="formulario10">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{user.username}}" name="valcorreo">
+                    </form>
+                        <script>
+                            function enviar_formulario10(){
+                            document.formulario10.submit()
+                            }
+                    </script>
+                {% else %}
+                    {% if perms.core.view_detalleoferta %}
+                    
+                        <a href="{% url 'home' %}"
+                            class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0 ">
+                            <li>Inicio</li>
+                        </a>
+                        <a href="#" class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0">
+                            <li></li>
+                        </a>
+                        <a href="javascript:enviar_formulario()" class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0">
+                            <li>Historial de Ofertas</li>
+                        </a>
+                        <form action="{% url 'historial_ofertas' %}" method="POST" hidden="hidden" name="formulario3">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{user.username}}" name="valcorreo">
+                        </form>
+                        <script>
+                                function enviar_formulario(){
+                                document.formulario3.submit()
+                            }
+                        </script>
+                        <a href="{% url 'portalDeOfertas' %}" class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0">
+                            <li>Portal de Ofertas</li>
+                        </a>
+                        <a href="#" class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0">
+                            <li></li>
+                        </a>
+                    
+                    {% else %}
+                        {% if perms.core.view_ventalocal %}
+                          
+                           
+                        {% else %}
+                            <a href="{% url 'home' %}"
+
+                                class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0 ">
+                                <li>Inicio</li>
+                            </a>
+                            <a href="{% url 'info_empresa' %}" class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0">
+                                <li>Empresa</li>
+                            </a>
+                            <a href="{% url 'contactanos' %}" class="contenedor-enlace__li centrar-contenedor py-4 hover:bg-green-600 md:p-0">
+                                <li>Contactanos</li>
+                            </a>
+                            
+                            
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+            </ul>
+        </div>
+        {% if user.is_authenticated %}
+            <div class="contenedor-btn grid grid-cols-1 col-span-3 md:grid-col-2 md:col-span-2">
+                <div class="centrar-contenedor py-2 md:py-0">
+                    <a href="{% url 'logout' %}" class="btn btn-blue w-full md:w-48 hover:bg-blue-600"><span
+                    class="text-white">Cerrar sesión</span></a>
+                </div>
+                <div class="centrar-contenedor py-2 md:py-0">
+                    <a href="{% url 'usuario' %}" class="btn btn-orange w-full md:w-48 hover:bg-orange-600"><span
+                    class="text-white"> {{user.get_full_name | upper}}</span></a>
+                </div>
+            </div>
+        {% else %}
+        <div class="contenedor-btn grid grid-cols-1 col-span-3 md:grid-col-2 md:col-span-2">
+            <div class="centrar-contenedor py-2 md:py-0">
+                <a href="{% url 'login' %}" class="btn btn-blue w-full md:w-48 hover:bg-blue-600"><span
+                        class="text-white">Ingresar</span></a>
+            </div>
+            <div class="centrar-contenedor py-2 md:py-0">
+                <a href="{% url 'registro' %}" class="btn btn-orange w-full md:w-48 hover:bg-orange-600"><span
+                class="text-white">Registrarse</span></a>
+            </div>
+        </div>
+        {% endif %}
+    </div>

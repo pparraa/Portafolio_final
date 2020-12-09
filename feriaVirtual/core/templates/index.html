@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %} Index {% endblock %}
+
+{% block content %}
+{% if perms.core.view_ventalocal %}
+    {% include 'include/oferta.html' %}
+    {% include 'include/producto.html' %}
+{% else %}
+    {% include 'include/banner.html' %}
+    {% include 'include/oferta.html' %}
+    {% include 'include/producto.html' %}
+{% endif %}
+{% endblock %}

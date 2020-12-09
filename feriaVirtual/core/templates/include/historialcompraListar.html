@@ -1,0 +1,58 @@
+{%load humanize%}
+<div class="HistorialCompra-contenedor" style="padding-left:2rem; padding-right:2rem; padding-bottom:2rem">
+	<div class="HistorialCompra-contenedor-titulo">
+		<h2 class="HistorialCompra-contenedor-titulo__h2">Historial de Compras</h2>
+	</div>
+    
+	<div class="HistorialCompra-contenedor-tabla">
+		{% if registros %}
+			<input id="valcorreo" name="valcorreo" type="hidden" value="{{request.user.username}}">
+            <h1></h1>
+			<table class="listarSolicitud-contenedor-solicitudes">
+				<thead>
+					<tr class="HistorialCompra-contenedor-tabla__tr">
+						<th class="HistorialCompra-contenedor-tabla__th w-1/12">N°</th>
+						<th class="HistorialCompra-contenedor-tabla__th w-1/12">Descripción</th>
+						<th class="HistorialCompra-contenedor-tabla__th w-1/12">Total</th>
+						<th class="HistorialCompra-contenedor-tabla__th w-1/12">Fecha Compra</th>
+						<th class="HistorialCompra-contenedor-tabla__th w-1/12">Ver Detalle</th>
+					</tr>
+				</thead>
+				<tbody class="HistorialCompra-contenedor-tabla__tbody">
+					{% for h in registros %}
+					<tr class="HistorialCompra-contenedor-tabla-tbody__tr">
+						<td class="HistorialCompra-contenedor-tabla__td text-center">{{h.0}}</td>
+						<td class="HistorialCompra-contenedor-tabla__td text-center">{{h.1}}</td>
+						<td class="HistorialCompra-contenedor-tabla__td text-center">{{h.2|intcomma}}</td>
+						<td class="HistorialCompra-contenedor-tabla__td text-center">{{h.3}}</td>
+						<td class="HistorialCompra-contenedor-tabla__td text-center">
+							
+							<form action="{% url 'detalle_historial_compra' %}" method="POST">
+								{% csrf_token %}
+								<input type="hidden" value="{{h.8}}" name="idventa">
+								<input type="hidden" value="{{h.5}}" name="correo">
+								<input type="hidden" value="{{h.7}}" name="variedad">
+								<button type="menu" class="px-2 py-1 rounded-lg bg-blue-500 text-white focus:outline-none">
+									<i class="fas fa-book-open"></i>
+									<input class="" type="submit" value=""  style="background-color: transparent !important; outline:none !important;"/>
+								</button>
+							</form>
+							
+						</td>
+					</tr>
+					
+					{% endfor %}
+				</tbody>
+            </table>
+            <br>
+			<br>
+			<br>
+			<br>
+			<br>
+            {% else %}
+            <h1>Sin historial de compras</h1>
+            {% endif %}
+
+        
+	</div>
+</div>

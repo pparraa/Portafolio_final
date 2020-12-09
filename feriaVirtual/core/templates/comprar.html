@@ -1,0 +1,99 @@
+{% extends "base.html" %} {% block title %} Comprar {% endblock %}
+
+{% load static %}
+
+{% block css %}
+
+  <link rel="stylesheet" href="{% static '../static/css/estilos.css' %}"/>
+
+{% endblock %}
+
+{%load humanize%}
+
+{% block content %}
+  <form class="formulario_pago" action="" method="POST">
+    {% csrf_token %}
+
+    <h1 class="h1_pago">Realizar Pago</h1>    
+    <div class="contenedor_pago">
+      {% for d in db_vlocal %}
+        <br>
+        <h2 class="h2_pago">Datos compra</h2>
+        <br>
+        <div class="contenedor_compra_pago">
+          <h2 class="h2_pago">
+            <td>
+              {{d.data.5}} {{d.data.6}} costo: $ {{d.data.3|intcomma}} x {{kilos}} Kg.
+            </td>           
+          </h2>
+        </div>
+          <input class="input_pago" type="hidden" value="{{d.data.3}}" name="val1">
+          <input class="input_pago" type="hidden" value="{{kilos}}" name="val2">
+        <br>
+        <div class="contenedor_compra_pago">
+          <h2 class="h2_pago">Usuario: {{user.first_name | upper}} {{user.last_name | upper}}</h2>
+        </div>
+
+        <br>
+        <div class="contenedor_compra_pago">       
+          <h2 class="h2_pago">Total a Pagar: $ <input type="number" value="" id="total" name="total" readonly></h2>
+        </div>
+
+        <br>
+        <div class="contenedor_compra_pago">
+          <h2 class="h2_pago">
+            Fecha:
+            <script>
+            var f = new Date();
+            fecha = document.write(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
+            </script> 
+          </h2>
+        </div>
+
+        <br>
+
+         
+          <input type="hidden" id="kilos" value="{{kilos}}" name="kilos" input="calcular()">     
+          <input type="hidden" value="{{d.data.0}}" name="Publicacion">
+          <input type="hidden" id="precio" value="{{d.data.3}} " name="precio" input="calcular()">
+          
+          <br>
+          <br>
+          <input type="submit" value="Pagar" class="button_pago"/>
+          <br>
+          <br>
+          
+    </div>
+  </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    {% endfor %} 
+  <script type="text/javascript">
+    window.onload = function calcular(){
+      try{
+        var a = document.getElementById("kilos").value;
+        var b = document.getElementById("precio").value;
+        r=a*b;
+        document.getElementById("total").value = r;
+      }catch (e) {}
+      }
+
+
+
+      function format(input)
+      {
+        var num = input.value.replace(/\./g,'');
+        if(!isNaN(num)){
+          num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+          num = num.split('').reverse().join('').replace(/^[\.]/,'');
+          input.value = num;
+        } 
+        else{ alert('Solo se permiten numeros');
+          input.value = input.value.replace(/[^\d\.]*/g,'');
+        }
+      }
+  </script>
+
+{% endblock %}

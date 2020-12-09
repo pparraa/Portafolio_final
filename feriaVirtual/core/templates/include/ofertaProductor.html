@@ -1,0 +1,153 @@
+<div class="contenedor-tarjeta" style="padding-left:5rem; padding-right:5rem; padding-bottom:5rem">
+	 
+	<form id="oferta-productor" action=""  method="POST" name="oferta-productor">
+		{% csrf_token %}
+		<div class="contenedor-titulo">
+        	<h2>Oferta Productor</h2>
+    	</div>
+		<div class="row">
+			{% if messages %}
+		
+				<script>
+					alertify.success('Oferta Exitosa!!!');
+				</script>
+			
+			{% endif %}
+    	</div>
+		{% for d in bd_pedido %}
+		<div class="HistorialCompra-contenedor-titulo">
+			<h2 class="HistorialCompra-contenedor-titulo__h4">Variedad Solicitada: {{d.5}} {{d.6}} {{d.7}} K. </h2>
+		</div>
+		<br>
+		<br>
+		<div class="crearSolicitud-contenedor-formulario grid grid-cols-1 sm:grid-cols-4">
+			
+			<!-- Especie -->
+			<div class="unidad-tarjeta">
+				<h3>1.- Fruta Seleccionada</h3>
+			</div>
+			<!-- Variedad -->
+			<div class="unidad-tarjeta">
+				<h3>2.- Variedad Seleccionada</h3>
+			</div>
+		
+			<!-- Cantidad -->
+			<div class="unidad-tarjeta">
+				<h3>4.- Ingrese kilos</h3>
+			</div>
+			<!-- Precio -->
+			<div class="unidad-tarjeta">
+				<h3>5.- Ingrese Precio Oferta</h3>
+			</div>
+			
+		</div>
+		<div class="crearSolicitud-contenedor-formulario grid grid-cols-1 sm:grid-cols-4">
+			
+			<!-- Especie -->
+			<div class="contenedor-inputs">
+				<b><h4 style="margin: 5px; font-size: 15px;">Especie:</h4></b>
+				<input id="especie" name="especie" type="text"
+					class="input focus:outline-none focus:border-orange-500" value="{{d.5}}" readonly/>
+			</div>
+			<!-- Variedad -->
+			<div class="contenedor-inputs">
+				<b><h4 style="margin: 5px; font-size: 15px;">Variedad:</h4></b>
+				<input id="variedad" name="variedad" type="text"
+					class="input focus:outline-none focus:border-orange-500" value="{{d.6}}" readonly/>
+			</div>
+			<!-- Cantidad -->
+			<div class="contenedor-inputs">
+				<b><h4 style="margin: 5px; font-size: 15px;">kilos:</h4></b>
+				<input id="crearSolicitud-kilos" name="kilos" type="text"
+					class="input focus:outline-none focus:border-orange-500" placeholder="kilos:{{d.data.3}}max."
+					  onkeypress='return event.charCode >= 48 && event.charCode <= 57' required/>
+			</div>
+			<div class="contenedor-inputs">
+				<b><h4 style="margin: 5px; font-size: 15px;">Precio:</h4></b>
+				<input id="crearSolicitud-precio" name="precio" type="text"
+					class="input focus:outline-none focus:border-orange-500" placeholder="Ingrese precio:" 
+					 onkeypress='return event.charCode >= 48 && event.charCode <= 57' required/>
+			</div>
+			
+		</div>
+		<br>
+		<div class="crearSolicitud-contenedor-formulario grid grid-cols-1 sm:grid-cols-4">
+		<!-- Fecha-->
+		<div class="unidad-tarjeta">
+			<h3>6.- Ingrese Fecha de Cosecha</h3>
+		</div>
+		<div class="contenedor-inputs"></div>
+		<div class="contenedor-inputs"></div>
+		<div class="contenedor-inputs"></div>
+		<br>
+
+		</div>
+		<div class="crearSolicitud-contenedor-formulario grid grid-cols-1 sm:grid-cols-4">
+			<div class="contenedor-inputs">
+				<b><h4 style="margin: 5px; font-size: 15px;">Fecha de Cosecha:</h4></b>
+				<input id="registro-fecha" name="fecha" type="text"
+				class="input appearance-none focus:outline-none focus:border-orange-500"
+				placeholder="Fecha de Nacimiento" required maxlength="10" minlength="10"/>
+			</div>
+			<div class="contenedor-inputs"></div>
+			<div class="contenedor-inputs"></div>
+			<div class="contenedor-inputs"></div>
+			<br>
+		<br>
+		</div>
+		<div class="HistorialCompra-contenedor-titulo">
+			<h2 class="HistorialCompra-contenedor-titulo__h4">Ofertar:</h2>
+		</div>
+		<!-- Btn -->
+		<div class="contenedor-btns flex justify-end lg:col-span-3">
+            <input type="hidden" value="{{user.username}}" name="correo">
+			<input type="hidden" value="{{d.1}}" name="solicitud">
+			<input type="hidden" value="{{user.get_full_name}}" name="user">
+			<button type="submit" class="informacionDespacho-contenedor-btns__button btn w-1/3 lg:w-1/4 focus:outline-none"
+            >Guardar</button>
+        </div>
+		{% endfor %}
+		
+	<!---------------------------------------------------------------------------------------------------------------------------->
+	</form>
+</div>
+<script>
+	function validaNumericos(event) {
+    if(event.charCode >= 48 && event.charCode <= 57){
+      return true;
+     }
+     return false;        
+    }
+</script>
+<script>
+	// Inicio DatePicker JQuery
+	$.datepicker.regional['es'] = {
+		closeText: 'Cerrar',
+		prevText: '< Ant',
+		nextText: 'Sig >',
+		currentText: 'Hoy',
+		monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+			'Noviembre', 'Diciembre'],
+
+		monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+		dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+		dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+		dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+		weekHeader: 'Sm',
+		dateFormat: 'dd/mm/yy',
+		firstDay: 1,
+		isRTL: false,
+		showMonthAfterYear: false,
+		yearSuffix: ''
+	};
+
+	$.datepicker.setDefaults($.datepicker.regional['es']);
+	$('#registro-fecha').datepicker({
+		changeMonth: true,
+		changeYear: true
+		
+		
+	});
+	// Fin DatePicker JQuery
+
+</script>

@@ -1,0 +1,312 @@
+
+<div class="contenedor-tarjeta" style="padding-left:5rem; padding-right:5rem; padding-bottom:5rem ">
+	<div class="contenedor-titulo">
+        <h2>Solicitud de Frutas</h2>
+    </div>
+	<div class="crearSolicitud-contenedor-titulo">
+		<h2 >Seleccione su Pedido:</h2>
+		<br>
+	</div>
+	<br>
+	<br>
+	<div class="crearSolicitud-contenedor-formulario grid grid-cols-1 sm:grid-cols-4">
+		<div class="unidad-tarjeta">
+			<h3>1.- Seleccione Fruta</h3>
+		</div>
+		<div class="unidad-tarjeta">
+			<h3>2.- Seleccione Variedad</h3>
+		</div>
+		<div class="unidad-tarjeta">
+			<h3>3.- Ingrese kilos</h3>
+		</div>
+		<div class="unidad-tarjeta">
+			<h3>4.- Ingrese Fecha Estimada</h3>
+		</div>
+	</div>
+		<br>
+	<form id="form-suscripcion" method="POST">
+	<div class="crearSolicitud-contenedor-formulario grid grid-cols-1 sm:grid-cols-4">
+		
+		<div class="contenedor-selects">			
+			<select id="especie" name="especie"
+				class="contenedor-selects__select focus:outline-none focus:border-orange-500" required
+				onchange="cambiarvariedad()">
+				<option value="0" disabled selected>Lista de frutas</option>
+				{% for c in especie%}
+				<option value="{{c.1}}" name="{{c.1}}">{{c.1}}
+				</option>
+				{% endfor %}
+			</select>
+		</div>
+			
+		<div class="contenedor-selects">			
+			<select id="variedad" name="variedad"
+				class="contenedor-selects__select focus:outline-none focus:border-orange-500" required>
+	
+					<!-- VACIO-->
+			</select>
+			</div>
+
+			<div class="contenedor-inputs">
+			<input id="cantidad" name="cantidad" type="text"
+				class="input focus:outline-none focus:border-orange-500" placeholder="Cantidad Kilos"
+				data-toggle="tooltip" data-placement="right" title="Ingrese cantidad de kilos"
+				onkeypress='return event.charCode >= 48 && event.charCode <= 57'required/>
+
+			</div>
+
+			<div class="contenedor-inputs">
+				<input id="fecha" name="fecha" type="text"
+					class="input appearance-none focus:outline-none focus:border-orange-500" placeholder="Plazo Estimado"
+					data-toggle="tooltip" data-placement="right" title="Ingrese fecha estimada de entrega"
+					required maxlength="10" minlength="10" />
+			</div>
+		</form>
+		</div>
+		<br>
+		<br>
+		<div class="contenedor-btns">
+			<button  onclick="agregarFila(especie.value, variedad.value, cantidad.value)" 
+				class="btn bg-green-500 text-white w-1/4 focus:outline-none">
+				Agregar Fruta
+			</button>
+		</div>
+		<br>
+		<br>
+		<div class="crearSolicitud-contenedor-titulo">
+			<h2 >Fruta Pedido:</h2>
+			<br>
+		</div>
+		<br>
+		<!--------------------------------------------------------------------------------------------->
+		<div class="crearSolicitud-contenedor-formulario ">
+			<table class="table table-striped" id="tablita">
+				<thead>
+					<tr class="HistorialCompra-contenedor-tabla__tr">
+						<th class="crearSolicitud-contenedor-tabla__th ">Nombre</th>
+						<th class="crearSolicitud-contenedor-tabla__th ">Variedad</th>
+						<th class="crearSolicitud-contenedor-tabla__th ">Kilos</th>
+						<th class="crearSolicitud-contenedor-tabla__th ">Quitar</th>
+					</tr>
+				</thead>
+				<tbody id="tablaItems" class="crearSolicitud-contenedor-tabla__tbody">
+					<tr class="HistorialCompra-contenedor-tabla-tbody__tr">
+							<!--aqui se Agregar-->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<div class="contenedor-btns centrar-contenedor">
+			<input type="hidden" value="{{user.username}}" id="usuariox" name="usuariox">
+			<button class="btn bg-success text-white w-1/4 focus:outline-none" type="submit"
+				onclick="solicituguardar()">Enviar
+				Solicitud</button>
+		</div>
+		
+		<!--------------------------------------------------------------------------------------------->
+		<br>
+		<div class="crearSolicitud-contenedor-titulo">
+			
+		</div>
+			<div class="HistorialCompra-contenedor-tabla">
+				
+				<br>
+				<br>
+				<div class="contenedor-btns centrar-contenedor">
+			
+					<input type="hidden" value="{{user.get_username}}" id="usuariox" name="usuariox">
+
+					<button class="btn bg-green-500 text-white w-1/4 focus:outline-none" type="submit"
+					 onclick="solicituguardar()">Enviar
+					Solicitud</button>
+				</div>
+			</div>
+</div>
+
+<script>
+	// Inicio Select Select2
+	$(document).ready(function () {
+
+		const selects = document.getElementsByTagName('select');
+		for (const element of selects) {
+			$(`#${element.id}`).select2({
+				placeholder: `Selecciona ${element.id === 'crearSolicitud-especie' ? 'Fruta' : 'Variedad Fruta'}`,
+				language: {
+					noResults: function () {
+						return "No hay resultado";
+					},
+					searching: function () {
+						return "Buscando..";
+					}
+				},
+				// theme: "registro-contenedor-selects__select"
+			});
+		}
+
+	});
+// Fin Select Select2
+</script>
+<script>
+	function validaNumericos(event) {
+    if(event.charCode >= 48 && event.charCode <= 57){
+      return true;
+     }
+     return false;        
+    }
+</script>
+
+<script>
+	function cambiarvariedad() {
+		let categoriaid = document.getElementById("especie").value;
+		let url = '/variedad/?especie=' + categoriaid;
+
+		fetch(url)
+			.then(function (result) {
+				return result.text();
+			})
+			.then(function (result) {
+				document.getElementById('variedad').innerHTML = result;
+			})
+
+	}
+
+</script>
+
+<script>
+	// Inicio DatePicker JQuery
+	$.datepicker.regional['es'] = {
+		closeText: 'Cerrar',
+		prevText: '< Ant',
+		nextText: 'Sig >',
+		currentText: 'Hoy',
+		monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+			'Noviembre', 'Diciembre'],
+
+		monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+		dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+		dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+		dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+		weekHeader: 'Sm',
+		dateFormat: 'yy/mm/dd',
+		firstDay: 1,
+		isRTL: false,
+		showMonthAfterYear: false,
+		yearSuffix: ''
+	};
+
+	$.datepicker.setDefaults($.datepicker.regional['es']);
+	$('#fecha').datepicker({
+		changeMonth: true,
+		changeYear: true,
+		maxDate: "1Y",
+		minDate: "+D"
+	});
+</script>
+
+<script>
+	// Create Django Ajax Call
+	function agregarFila(especie, variedad, cantidad) {
+
+		if (especie && variedad && cantidad) {
+
+
+			var table = document.getElementById("tablaItems");
+			var row = table.insertRow(-1);
+
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
+			//var cell5 = row.insertCell(4);
+			// Add some text to the new cells:
+			var valor1 = document.getElementById(variedad).textContent;
+
+			cell1.innerHTML = "<td class='HistorialCompra-contenedor-tabla__td text-right'>" + especie + "</td>";
+			cell2.innerHTML = '<td class="HistorialCompra-contenedor-tabla__td text-center">' + valor1 + '</td>';
+			cell3.innerHTML = '<td class="HistorialCompra-contenedor-tabla__td text-center">' + cantidad + '</td>';
+			//cell4.innerHTML = fecha;
+			cell4.innerHTML = '<input class="px-2 py-1 rounded-lg bg-red-500 text-white focus:outline-none" type="button" value="Borrar" onclick="eliminarFilaID(this)">';
+			alertify.success('Fruta ingresada');
+		} else {
+			alertify.error("Complete todos los campos!!!")
+		}
+	}
+
+	function eliminarFila() {
+		document.getElementById("tablaItems").deleteRow(-1);
+		alertify.error('Fila Borrada');
+	}
+
+	function eliminarFilaID(r) {
+		var i = r.parentNode.parentNode.rowIndex;
+		document.getElementById("tablaItems").deleteRow(i - 1);
+		alertify.error('Fila Borrada');
+	}
+
+	function solicituguardar() {
+		var filas = [];
+
+		let fecha = document.getElementById("fecha").value;
+		let usuarioe = document.getElementById("usuariox").value;
+
+		alertify.confirm("Solicitud", "Desea enviar la solicitud?",
+			function () {
+
+				$.ajax({
+					url: '{% url "crud_ajax_create2" %}',
+					data: {
+						'fecha': fecha,
+						'usuariox': usuarioe
+					},
+					dataType: 'json',
+					async: false,
+					success: function (data) {
+						if (data.user) {
+							appendToUsrTable(data.user);
+						}
+					}
+				});
+
+
+
+		$('#tablaItems tr').each(function () {
+			var especie = $(this).find('td').eq(0).text();
+				var variedad = $(this).find('td').eq(1).text();
+				var cantidad = $(this).find('td').eq(2).text();
+				$.ajax({
+					url: '{% url "crud_ajax_create" %}',
+					data: {
+						'especie': especie,
+						'variedad': variedad,
+						'cantidad': cantidad
+					},
+					dataType: 'json',
+					async: false,
+					success: function (data) {
+						if (data.user) {
+							appendToUsrTable(data.user);
+
+						}
+					}
+
+					});
+
+				});
+				
+				console.log(filas)
+				// Create Ajax Call
+				window.location.replace('{% url "solicitud" %}');
+				alertify.success('Solicitud enviada');
+			},
+
+			function () {
+				alertify.error('No se a realizado la solicitud');
+			}).set('labels', {ok:'Aceptar', cancel:'Cancelar'},);
+
+	};
+
+</script>
+
+
+
